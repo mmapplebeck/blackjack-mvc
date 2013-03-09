@@ -1,0 +1,442 @@
+@mixin transform($rotation) {
+  -moz-transform: $rotation;
+  -webkit-transform: $rotation;
+  transform: $rotation;
+}
+
+@mixin transformStyle($style) {
+  -webkit-transform-style: $style;
+  -moz-transform-style: $style;
+  transform-style: $style;
+}
+
+@mixin perspective($perspective) {
+  -webkit-perspective: $perspective * 1px;
+  -moz-perspective: $perspective * 1px;
+  perspective: $perspective * 1px;
+}
+
+@mixin transition($transition, $seconds) {
+  -webkit-transition: $transition ($seconds * 1s);
+  -moz-transition: $transition ($seconds * 1s);
+  transition: $transition ($seconds * 1s);
+}
+
+@mixin backfaceVisibility($visibility) {
+  -webkit-backface-visibility: $visibility;
+  -moz-backface-visibility: $visibility;
+  backface-visibility: $visibility;
+}
+
+@mixin boxShadow($shadow) {
+  -moz-box-shadow: $shadow;
+  -webkit-box-shadow: $shadow;
+  box-shadow: $shadow;
+}
+
+@mixin borderRadius($radius) {
+  -moz-border-radius: $radius * 1px;
+  -webkit-border-radius: $radius * 1px;
+  border-radius: $radius * 1px;
+}
+
+@function cardem($value) {
+  @return ($value / 200 * 16) * 1em;
+}
+
+$suit-size: 5.8em;
+
+@function suitem($value) {
+  @return (cardem($value) / $suit-size) * 1em;
+}
+
+@function divideBy($dividend, $divisor) {
+  @return $dividend/$divisor;
+}
+
+@font-face {
+  font-family: "Bebas Neue";
+  src: url('BebasNeue.otf');
+}
+
+.inactive {
+	opacity: .05;
+}
+
+.hidden {
+  display: none;
+}
+
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+body {
+  font-family: "Bebas Neue";
+  font-size: 62.5%;
+  margin: 0;
+  background: #222;
+}
+
+h4 {
+  text-transform: capitalize;
+}
+
+h4, h5 {
+  margin: 0;
+  font-size: 1.8em;
+  font-weight: normal;
+}
+
+.container {
+  width: 900px;
+  margin: 0 auto;
+  position: relative;
+  padding: 20px 0;
+}
+
+#playing-table {
+  background: green url(../i/bg-noise.png);
+  border-bottom: 1px solid #111;
+  
+  #msg {
+    width: auto;
+    color: white;
+    font-size: 2.8em;
+    text-transform: uppercase;
+    padding: 20px;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    z-index: 10;
+    background: rgba(0,0,0,.9);
+    @include borderRadius(3);
+  }
+}
+
+.hand {
+  height: 136px;
+
+  .total {
+    float: left;
+    width: 40px;
+    height: 31px;
+    margin-right: 10px;
+    font-size: 1.8em;
+    padding-top: 9px;
+    text-align: center;
+    background: darkgreen;
+  }
+}
+
+.cards {
+  font-size: 6px;
+  float: left;
+  position: relative;
+}
+
+.card {
+  @include perspective(1000);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  float: left;
+  margin: 0 cardem(15) 0 0;
+  position: relative;
+
+  &.noshadow {
+    @include boxShadow(none);
+  }
+
+  .card-inner {
+    @include transition(all, 0.2);
+    position: relative;
+  }
+
+  .card-front,
+  .flipped {
+    @include transform(rotateY(180deg));
+    @include transformStyle(preserve-3d);
+  }
+
+  .card-front, .card-back {
+    @include backfaceVisibility(hidden);
+    @include boxShadow(0 0 5px rgba(0, 0, 0, 0.5));
+    @include borderRadius(5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: cardem(200);
+    height: cardem(280);
+    background-color: #fff;
+  }
+
+  .card-back {
+    z-index: 2;
+    img {
+      width: cardem(200);
+      height: cardem(280);
+    }
+  }
+
+  .hearts,
+  .diams {
+    color: #df0000;
+  }
+
+  .corner {
+    line-height: 1;
+    position: absolute;
+    text-align: center;
+    span {
+      display: block;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .number {
+      font-size: 2em;
+      height: divideBy(cardem(24), 2)em;
+      line-height: divideBy(cardem(24), 2)em;
+    }
+    &.top {
+      left: cardem(8);
+      top: cardem(12);
+    }
+    &.bottom {
+      @include transform(rotate(180deg));
+      bottom: cardem(12);
+      right: cardem(8);
+    }
+  }
+
+  .card-ace span.suit.middle-center {
+    font-size: cardem(128);
+    left: suitem(33);
+    top: suitem(43);
+  }
+
+  .card-ten .corner .number {
+    font-size: 1.5em;
+  }
+
+  .face img {
+    position: absolute;
+    left:  cardem(32);
+    top:   cardem(26);
+    width: cardem(135);
+    height: cardem(228);
+  }
+
+  .suit {
+    font-size: $suit-size;
+    font-weight: normal;
+    width: suitem(50);
+    height: suitem(57);
+    line-height: suitem(57);
+    position: absolute;
+    text-align: center;
+
+    &.top-center {
+      left: suitem(76);
+      top: suitem(24);
+    }
+    &.top-left {
+      left: suitem(30);
+      top: suitem(24);
+    }
+    &.top-right {
+      right: suitem(30);
+      top: suitem(24);
+    }
+    &.middle-center {
+      left: suitem(76);
+      top: suitem(110);
+    }
+    &.middle-top {
+      left: suitem(76);
+      top: suitem(70);
+    }
+    &.middle-bottom {
+      bottom: suitem(70);
+      left: suitem(76);
+      @include transform(rotate(180deg));
+    }
+    &.middle-left {
+      left: suitem(30);
+      top: suitem(110);
+    }
+    &.middle-right {
+      right: suitem(30);
+      top: suitem(110);
+    }
+    &.middle-top-center {
+      left: suitem(76);
+      top: suitem(60);
+    }
+    &.middle-top-left {
+      left: suitem(30);
+      top: suitem(80);
+    }
+    &.middle-top-right {
+      right: suitem(30);
+      top: suitem(80);
+    }
+    &.middle-bottom-left {
+      bottom: suitem(80);
+      left: suitem(30);
+      @include transform(rotate(180deg));
+    }
+    &.middle-bottom-right {
+      bottom: suitem(80);
+      right: suitem(30);
+      @include transform(rotate(180deg));
+    }
+    &.middle-bottom-center {
+      bottom: suitem(60);
+      left: suitem(76);
+      @include transform(rotate(180deg));
+    }
+    &.bottom-center {
+      bottom: suitem(24);
+      left: suitem(76);
+      @include transform(rotate(180deg));
+    }
+    &.bottom-left {
+      bottom: suitem(24);
+      left: suitem(30);
+      @include transform(rotate(180deg));
+    }
+    &.bottom-right {
+      bottom: suitem(24);
+      right: suitem(30);
+      @include transform(rotate(180deg));
+    }
+  }
+}
+
+.card,
+.card-inner {
+  width: cardem(200);
+  height: cardem(280);
+}
+
+.card-placeholder {
+  width: 15.2em;
+  height: 21.8em;
+  border: .5em solid white;
+  position: absolute;
+	@include borderRadius(5);
+  opacity: .25;
+}
+
+#ui {
+  background: #222;
+  border-top: 1px solid #333;
+}
+
+#ui .group, #bets {
+  float: left;
+}
+
+#stats {
+  background: black;
+  text-transform: uppercase;
+  border: 1px solid #333;
+  color: white;
+  @include borderRadius(5);
+
+  .title  {
+    padding: 5px;
+    
+    &.first-child {
+      border-bottom: 1px solid #333;
+    }
+  }
+    
+  .stat {
+    font-size: 1em;
+    float: right;
+    text-align: right;
+    background: gray;
+    min-width: 60%;
+    padding-right: 5px;
+    background: #333;
+    @include borderRadius(3);
+  }
+}
+
+#chips {
+  padding: 10px;
+}
+
+.chip-container {
+  float: left;
+  
+  &.first-child {
+    .chip{
+      margin-left: 0;
+    }
+  }
+}
+
+.chip {
+  width: 48px;
+  height: 37px;
+  font-size: 2.4em;
+  padding-top: 11px;
+  margin-left: 10px;
+  text-align: center;
+  border: 1px solid black;
+  @include borderRadius(24);
+
+  &.chip-inactive {
+    opacity: .1;
+  }
+  &.chip-active {
+    &:hover {
+      @include transform(rotate(20deg));
+    }
+  }
+  &.chip-1 {
+    background: white;
+  }
+  &.chip-5 {
+    background: red;
+  }
+  &.chip-10 {
+    background: green;
+  }
+  &.chip-25 {
+    color: #666;
+    background: black;
+  }
+}
+
+#actions {
+  margin-left: 10px;
+}
+.action {
+  float: left;
+  text-align: center;
+}
+.action > div{
+  color: #333;
+  text-shadow: 0 1px 0 white;
+  font-size: 2.8em;
+  margin-left: 10px;
+  width: 112px;
+  height: 81px;
+  padding: 44px 10px 0;
+  background: #ccc;
+  -moz-border-radius: .2em;
+  -webkit-border-radius: .2em;
+  border-radius: .2em;
+  border-top: 1px solid white;
+}
+.action > .active:hover {
+  margin-top: -1px;
+  background: #ddd;
+}
+.action > .active:hover, .chip-active:hover {
+  cursor: pointer;
+}

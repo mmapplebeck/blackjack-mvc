@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Blackjack MVC | Created by Matt Mapplebeck</title>
+  <link rel="stylesheet" href="assets/c/style.css">
+</head>
+<body>
+  <div id="game">
+    <div id="playing-table">
+      <div class="container">
+        <div id="msg" class="hidden">
+        </div>
+        <div id="dealer" class="group"></div>
+        <div id="player" class="group"></div>
+      </div>
+    </div>
+    <div id="ui">
+      <div class="container">
+        <div id="bets">
+          <div id="stats">
+            <h4 class="title">Stake <span id="stake" class="stat"></span></h4>
+            <h4 class="title">Chips <span id="chip-total" class="stat"></span></h4>
+          </div>
+          <div id="chips" class="group">
+          </div>
+        </div>
+        <div id="actions" class="group">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/template" id="action-template">
+    <div id="<%= id %>" class="<%= state %>">
+      <%= msg %>
+    </div>
+  </script>
+  <script type="text/template" id="chip-template">
+    <div class="chip chip-<%= val %> chip-<%= state %>">
+      <%= val %>
+    </div>
+  </script>
+  <script type="text/template" id="player-template">
+    <h5><%= name %></h5>
+    <div class="hand group">
+      <div class="total"></div>
+      <div class="cards group">
+        <div class="card card-placeholder"></div>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-2">
+    <div class="card-two <%= suit %> card-inner">
+      <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="suit top-center"><%= suit_char %></span>
+        <span class="suit bottom-center"><%= suit_char %></span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-3">
+    <div class="card-three <%= suit %> card-inner">
+      <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="suit top-center"><%= suit_char %></span>
+        <span class="suit middle-center"><%= suit_char %></span>
+        <span class="suit bottom-center"><%= suit_char %></span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-4">
+    <div class="card-four <%= suit %> card-inner">
+      <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="suit top-left"><%= suit_char %></span>
+        <span class="suit top-right"><%= suit_char %></span>
+        <span class="suit bottom-left"><%= suit_char %></span>
+        <span class="suit bottom-right"><%= suit_char %></span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-5">
+    <div class="card-five <%= suit %> card-inner">
+      <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="suit top-left"><%= suit_char %></span>
+        <span class="suit top-right"><%= suit_char %></span>
+        <span class="suit middle-center"><%= suit_char %></span>
+        <span class="suit bottom-left"><%= suit_char %></span>
+        <span class="suit bottom-right"><%= suit_char %></span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-6">
+    <div class="card-six <%= suit %> card-inner">
+      <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="suit top-left"><%= suit_char %></span>
+        <span class="suit top-right"><%= suit_char %></span>
+        <span class="suit middle-left"><%= suit_char %></span>
+        <span class="suit middle-right"><%= suit_char %></span>
+        <span class="suit bottom-left"><%= suit_char %></span>
+        <span class="suit bottom-right"><%= suit_char %></span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-7">
+    <div class="card-seven <%= suit %> card-inner">
+      <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="suit top-left"><%= suit_char %></span>
+        <span class="suit top-right"><%= suit_char %></span>
+        <span class="suit middle-left"><%= suit_char %></span>
+        <span class="suit middle-top"><%= suit_char %></span>
+        <span class="suit middle-right"><%= suit_char %></span>
+        <span class="suit bottom-left"><%= suit_char %></span>
+        <span class="suit bottom-right"><%= suit_char %></span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-8">
+    <div class="card-eight <%= suit %> card-inner">
+      <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="suit top-left"><%= suit_char %></span>
+        <span class="suit top-right"><%= suit_char %></span>
+        <span class="suit middle-left"><%= suit_char %></span>
+        <span class="suit middle-top"><%= suit_char %></span>
+        <span class="suit middle-right"><%= suit_char %></span>
+        <span class="suit middle-bottom"><%= suit_char %></span>
+        <span class="suit bottom-left"><%= suit_char %></span>
+        <span class="suit bottom-right"><%= suit_char %></span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-9">
+    <div class="card-nine <%= suit %> card-inner">
+        <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="suit top-left"><%= suit_char %></span>
+        <span class="suit top-right"><%= suit_char %></span>
+        <span class="suit middle-top-left"><%= suit_char %></span>
+        <span class="suit middle-center"><%= suit_char %></span>
+        <span class="suit middle-top-right"><%= suit_char %></span>
+        <span class="suit bottom-left"><%= suit_char %></span>
+        <span class="suit bottom-right"><%= suit_char %></span>
+        <span class="suit middle-bottom-left"><%= suit_char %></span>
+        <span class="suit middle-bottom-right"><%= suit_char %></span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-10">
+    <div class="card-ten <%= suit %> card-inner">
+      <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="suit top-left"><%= suit_char %></span>
+        <span class="suit top-right"><%= suit_char %></span>
+        <span class="suit middle-top-left"><%= suit_char %></span>
+        <span class="suit middle-top-center"><%= suit_char %></span>
+        <span class="suit middle-top-right"><%= suit_char %></span>
+        <span class="suit bottom-left"><%= suit_char %></span>
+        <span class="suit bottom-right"><%= suit_char %></span>
+        <span class="suit middle-bottom-left"><%= suit_char %></span>
+        <span class="suit middle-bottom-center"><%= suit_char %></span>
+        <span class="suit middle-bottom-right"><%= suit_char %></span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-J">
+    <div class="card-jack <%= suit %> card-inner">
+      <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="face middle-center">
+          <img src="assets/i/faces/face-jack-<%= suit %>.png">
+        </span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-Q">
+    <div class="card-queen <%= suit %> card-inner">
+      <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="face middle-center">
+          <img src="assets/i/faces/face-queen-<%= suit %>.png">
+        </span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-K">
+    <div class="card-king <%= suit %> card-inner">
+      <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="face middle-center">
+          <img src="assets/i/faces/face-king-<%= suit %>.png">
+        </span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id="card-template-A">
+    <div class="card-ace <%= suit %> card-inner">
+      <div class="card-front">
+        <div class="top corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+        <span class="suit middle-center"><%= suit_char %></span>
+        <div class="bottom corner">
+          <span class="rank"><%= rank %></span>
+          <span><%= suit_char %></span>
+        </div>
+      </div>
+      <div class="card-back">
+        <span class="middle-center">
+          <img src="assets/i/card-back.png">
+        </span>
+      </div>
+    </div>
+  </script>
+  <script src="js/lib/jquery.min.js"></script>
+  <script src="js/lib/underscore-min.js"></script>
+  <script src="js/lib/backbone-min.js"></script>
+  <script src="js/lib/backbone.localStorage.js"></script>
+  <script src="js/models/app.js"></script>
+  <script src="js/models/card.js"></script>
+  <script src="js/models/player.js"></script>
+  <script src="js/models/buffer.js"></script>
+  <script src="js/models/action.js"></script>
+  <script src="js/models/chip.js"></script>
+  <script src="js/collections/deck.js"></script>
+  <script src="js/collections/actions.js"></script>
+  <script src="js/collections/hand.js"></script>
+  <script src="js/collections/chips.js"></script>
+  <script src="js/views/app.js"></script>
+  <script src="js/views/card.js"></script>
+  <script src="js/views/hand.js"></script>
+  <script src="js/views/player.js"></script>
+  <script src="js/views/chip.js"></script>
+  <script src="js/views/chips.js"></script>
+  <script src="js/views/actions.js"></script>
+  <script src="js/views/action.js"></script>
+  <script src="js/routers/router.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
