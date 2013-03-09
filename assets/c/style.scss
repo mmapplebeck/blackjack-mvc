@@ -112,7 +112,7 @@ h4, h5 {
     left: 0;
     z-index: 10;
     background: rgba(0,0,0,.9);
-    @include borderRadius(3);
+    @include borderRadius(5);
   }
 }
 
@@ -141,7 +141,7 @@ h4, h5 {
   @include perspective(1000);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   float: left;
-  margin: 0 cardem(15) 0 0;
+  margin: 0 cardem(22) 0 0;
   position: relative;
 
   &.noshadow {
