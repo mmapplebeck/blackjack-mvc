@@ -35,11 +35,11 @@ h4, h5 {
 
 #playing-table {
   background: green url(../i/bg-noise.png);
-  border-bottom: 1px solid #111111; }
+  border-bottom: 1px solid #111; }
   #playing-table #msg {
     width: auto;
     color: white;
-    font-size: 2.8em;
+    font-size: 2.4em;
     text-transform: uppercase;
     padding: 20px;
     position: absolute;
@@ -72,7 +72,7 @@ h4, h5 {
   -webkit-perspective: 1000px;
   -moz-perspective: 1000px;
   perspective: 1000px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   float: left;
   margin: 0 1.2em 0 0;
   position: relative; }
@@ -239,7 +239,7 @@ h4, h5 {
 .card-placeholder {
   width: 15.2em;
   height: 21.8em;
-  border: 0.5em solid white;
+  border: .5em solid white;
   position: absolute;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -248,7 +248,7 @@ h4, h5 {
 
 #ui {
   background: #222;
-  border-top: 1px solid #333333; }
+  border-top: 1px solid #333; }
 
 #ui .group, #bets {
   float: left; }
@@ -256,7 +256,7 @@ h4, h5 {
 #stats {
   background: black;
   text-transform: uppercase;
-  border: 1px solid #333333;
+  border: 1px solid #333;
   color: white;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -264,7 +264,7 @@ h4, h5 {
   #stats .title {
     padding: 5px; }
     #stats .title.first-child {
-      border-bottom: 1px solid #333333; }
+      border-bottom: 1px solid #333; }
   #stats .stat {
     font-size: 1em;
     float: right;
@@ -322,11 +322,11 @@ h4, h5 {
 .action > div {
   color: #333;
   text-shadow: 0 1px 0 white;
-  font-size: 2.8em;
+  font-size: 2.4em;
   margin-left: 10px;
   width: 112px;
-  height: 81px;
-  padding: 44px 10px 0;
+  height: 78px;
+  padding: 47px 10px 0;
   background: #ccc;
   -moz-border-radius: .2em;
   -webkit-border-radius: .2em;
