@@ -348,8 +348,8 @@ h4, h5 {
   .title  {
     padding: 5px;
     
-    &.first-child {
-      border-bottom: 1px solid #333;
+    &:first-child {
+      padding-bottom: 0;
     }
   }
     

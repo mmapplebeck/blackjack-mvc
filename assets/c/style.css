@@ -263,8 +263,8 @@ h4, h5 {
   border-radius: 5px; }
   #stats .title {
     padding: 5px; }
-    #stats .title.first-child {
-      border-bottom: 1px solid #333; }
+    #stats .title:first-child {
+      padding-bottom: 0; }
   #stats .stat {
     font-size: 1em;
     float: right;
